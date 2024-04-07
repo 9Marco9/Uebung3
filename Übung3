@@ -1,0 +1,118 @@
+import math
+
+class Figur:
+    def __init__(self,name):
+        self.name = name
+
+    def Umfang(self):
+        return 0
+    
+    def flaeche(self):
+        return 0
+    
+    def __str__(self):
+        return self.name
+   
+
+
+class Punkt (Figur):
+    def __init__(self, x,y):
+        super().__init__("Punkt")
+        self.x =x
+        self.y =y
+
+    def distanz(self,other):
+        return math.sqrt((self.x - other.x) ** 2 + (self.y - other.y) ** 2)
+    
+    def __str__(self):
+        return f"Punkt(x={self.x},y={self.y})"
+    
+    
+class Kreis(Figur):
+    def __init__(self, mittelpunkt, radius):
+        super().__init__("Kreis")
+        self.mittelpunkt = mittelpunkt
+        self.radius = radius
+        
+
+    def flaeche(self):  
+        return self.radius **2 * math.pi
+    
+    def umfang(self):
+        return math.pi*self.radius*2
+    
+    def __str__(self):  
+        return f"Kreis Mittelpunkt = {self.mittelpunkt}, r = {self.radius}"
+
+class Dreieck(Figur):  
+    def __init__(self, A, B, C): 
+        super().__init__("Dreieck")  
+        self.A = A  
+        self.B = B
+        self.C = C 
+
+    def umfang(self):  
+        return self.A.distanz(self.B) + self.B.distanz(self.C) + self.C.distanz(self.A)
+
+    def __str__(self):  
+        return f"Dreieck {self.A},{self.B},{self.C}"
+
+class Rechteck(Figur):  
+    def __init__(self, Pmin, Pmax):  
+        super().__init__("Rechteck")  
+        self.Pmin = Pmin  
+        self.Pmax = Pmax  
+
+    def umfang(self): 
+        return 2 * abs(self.Pmax.x - self.Pmin.x) + 2 * abs(self.Pmax.y - self.Pmin.y)  
+
+    def __str__(self):  
+        return f"Rechteck Punkte = {self.Pmin}, {self.Pmax}"  
+
+class Polygon(Figur):  
+    def __init__(self, Punktliste): 
+        super().__init__("Polygon")  
+        self.pl = Punktliste  
+
+    def umfang(self): 
+        s = 0  
+        for i in range(0, len(self.pl) - 1):  
+            l1 = self.pl[i]  
+            l2 = self.pl[i + 1]  
+            s = s + l1.distanz(l2)  
+        return s 
+
+    def __str__(self):  
+        s = f"Polygon: "  
+        for punkt in self.pl:  
+            s = s + f"{punkt}" 
+        return s  
+
+
+P1 = Punkt(2,2)
+P2 = Punkt(4,0)
+P3 = Punkt(5,2)
+P4 = Punkt(3,3)
+
+#KREIS
+M = Punkt(4,5)
+k1 = Kreis(M,11)
+print(k1)  
+print(k1.flaeche())  
+print(k1.umfang()) 
+
+#DREIECK
+t = Dreieck(P1, P2, P3)
+print(t.umfang()) 
+print(t)  
+
+#RECHTECK
+r = Rechteck(P1, P4)
+print(r)  
+print(r.umfang())  
+
+#POLYGON
+polygonliste = [Punkt(1, 1), Punkt(2, 4), Punkt(3, 3.4), Punkt(4, 1)]  
+p1 = Polygon(polygonliste) 
+print(p1)  
+print(p1.umfang()) 
